@@ -1,0 +1,19 @@
+#execute this script with the source command
+
+set -ex
+
+if [ -z "$DOCKER_UTILS_HOME" ]; then
+	export DOCKER_UTILS_HOME=/docker-utils
+fi
+
+if [ -z "$DOCKER_UTILS_TMPDIR" ]; then
+	export DOCKER_UTILS_TMPDIR=/docker-utils/tmp
+fi
+
+if [ -z "$DOCKER_UTILS_APT_REF_COUNTS" ]; then
+	export DOCKER_UTILS_APT_REF_COUNTS=/docker-utils/refcounts
+fi
+
+export PATH=$PATH:$DOCKER_UTILS_HOME
+
+mkdir -p $DOCKER_UTILS_TMPDIR $DOCKER_UTILS_APT_REF_COUNTS

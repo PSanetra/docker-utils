@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -ex
+
+export ANT_VERSION=1.9.7
+export ANT_HOME=/opt/apache-ant-$ANT_VERSION
+export PATH=$PATH:$ANT_HOME/bin
+
+apt-get-install curl 
+
+curl -L http://ftp.halifax.rwth-aachen.de/apache//ant/binaries/apache-ant-$ANT_VERSION-bin.tar.gz > $ANT_HOME.tar.gz
+
+gpg-verify https://www.apache.org/dist/ant/KEYS https://www.apache.org/dist/ant/binaries/apache-ant-$ANT_VERSION-bin.tar.gz.asc $ANT_HOME.tar.gz
+
+xtrct $ANT_HOME.tar.gz
+
+exec "$@"
+
+apt-get-purge curl 
+
+rm -r $ANT_HOME

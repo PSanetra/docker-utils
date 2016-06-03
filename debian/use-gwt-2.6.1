@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -ex
+
+export DEBIAN_FRONTEND=noninteractive
+
+export GWT_VERSION=2.6.1
+export GWT_HOME=/opt/gwt-$GWT_VERSION
+export GWT_ZIP=gwt-$GWT_VERSION.zip \
+
+apt-get-install \
+        curl \
+        unzip
+
+cd /opt/
+
+curl -L http://goo.gl/BLc6R8 > $GWT_ZIP
+echo "8ebc808e9ca6ef7e8f6460c8c0840423c192b3c5 *$GWT_ZIP" | sha1sum --check 
+xtrct $GWT_ZIP
+
+exec $@
+
+rm -r $GWT_HOME
+
+apt-get-purge \
+        curl \
+        unzip

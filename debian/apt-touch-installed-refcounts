@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -ex
+
+LOCK_FILE=$DOCKER_UTILS_TMPDIR/apt-installed-refcounts-initialized
+
+if [[ -f $LOCK_FILE ]] ; then
+	exit
+fi
+
+touch $LOCK_FILE
+
+apt --installed list | grep -o -P '^(?!Listing\.\.\.)[^\/]+' | \
+while read PKG ; do
+
+	apt-inc-refcount $PKG
+
+done

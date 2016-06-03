@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -ex
+
+export DEBIAN_FRONTEND=noninteractive
+
+export LANG=C.UTF-8
+
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 
+export JAVA_VERSION=8u91
+export JAVA_DEBIAN_VERSION=8u91-b14-1~bpo8+1
+export CA_CERTIFICATES_JAVA_VERSION=20140324
+
+echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list \
+
+apt-get-install \
+        unzip \
+        bzip2 \
+        xz-utils \
+        openjdk-8-jdk="$JAVA_DEBIAN_VERSION" \
+        ca-certificates-java="$CA_CERTIFICATES_JAVA_VERSION"
+
+/var/lib/dpkg/info/ca-certificates-java.postinst configure
+
+exec "$@"
+
+apt-get-purge \
+        unzip \
+        bzip2 \
+        xz-utils \
+        openjdk-8-jdk="$JAVA_DEBIAN_VERSION" \
+        ca-certificates-java="$CA_CERTIFICATES_JAVA_VERSION"
+

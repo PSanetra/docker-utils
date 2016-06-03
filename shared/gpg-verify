@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -ex
+
+export GNUPGHOME=$DOCKER_UTILS_TMPDIR
+
+KEYS_URL=$1
+
+SIG_FILE_URL=$2
+
+FILE_TO_VERIFY=$3
+
+KEYS_FILE=$DOCKER_UTILS_TMPDIR/KEYS
+SIG_FILE=$DOCKER_UTILS_TMPDIR/sig.asc
+
+curl $KEYS_URL > $KEYS_FILE
+
+curl $SIG_FILE_URL > $SIG_FILE
+
+gpg --import $KEYS_FILE
+
+rm $KEYS_FILE
+
+gpg --verify $SIG_FILE $FILE_TO_VERIFY
+
+rm -r $SIG_FILE

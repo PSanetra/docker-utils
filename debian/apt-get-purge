@@ -1,0 +1,32 @@
+#!/bin/bash
+#only purges if the refcount in $DOCKER_UTILS_APT_REF_COUNTS
+
+for var in "$@"
+do
+	var_ref_count_path="$DOCKER_UTILS_APT_REF_COUNTS/$var"
+
+    if [[ "$var" =~ ^- && -f "$var_ref_count_path" ]]; then
+
+		var_ref_count=$(expr $(cat "$var_ref_count_path") - 1)
+
+    	if [[ $var_ref_count < 0 ]]; then
+			PURGE_PKGS="$PURGE_PKGS $var"
+
+    		rm "$var_ref_count_path"
+    	else
+			echo var_ref_count > "$var_ref_count_path"
+    	fi
+    else
+    	PURGE_OPTS="$PURGE_OPTS $var"
+    fi
+done
+
+if [ -z "$PURGE_PKGS" ]; then
+
+	export DEBIAN_FRONTEND=noninteractive
+
+	apt-get purge -y $PURGE_OPTS $PURGE_PKGS
+
+	apt-get autoremove -y
+
+fi

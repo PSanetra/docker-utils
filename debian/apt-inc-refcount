@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -ex
+
+PKG="$1"
+
+# ensure PKG does not start with a dash, because it could be a option parameter
+if [[ -z "$PKG" || "$PKG" =~ ^- ]]; then
+	exit
+fi
+
+PKG_REF_COUNT_PATH="$DOCKER_UTILS_APT_REF_COUNTS/$PKG"
+
+PKG_REF_COUNT=1
+
+if [ -f "$PKG_REF_COUNT_PATH" ]; then
+	PKG_REF_COUNT=$(expr $(cat "$PKG_REF_COUNT_PATH") + 1)	
+fi
+
+echo $PKG_REF_COUNT > "$PKG_REF_COUNT_PATH"
