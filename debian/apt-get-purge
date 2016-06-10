@@ -1,29 +1,29 @@
 #!/bin/bash
-#only purges if the refcount in $DOCKER_UTILS_APT_REF_COUNTS
+#only purges if the refcount in $DOCKER_UTILS_APT_REF_COUNTS is lower than 1
 
 set -ex
 
 for var in "$@"
 do
-	var_ref_count_path="$DOCKER_UTILS_APT_REF_COUNTS/$var"
+	PKG_REF_COUNT_PATH="$DOCKER_UTILS_APT_REF_COUNTS/$var"
 
-    if [[ "$var" =~ ^- && -f "$var_ref_count_path" ]]; then
+    if [[ ! "$var" =~ ^- && -f "$PKG_REF_COUNT_PATH" ]]; then
 
-		var_ref_count=$(expr $(cat "$var_ref_count_path") - 1)
+		PKG_REF_COUNT=$(expr $(cat "$PKG_REF_COUNT_PATH") - 1)
 
-    	if [[ $var_ref_count < 0 ]]; then
+    	if [[ $PKG_REF_COUNT < 1 ]]; then
 			PURGE_PKGS="$PURGE_PKGS $var"
 
-    		rm "$var_ref_count_path"
+    		rm "$PKG_REF_COUNT_PATH"
     	else
-			echo var_ref_count > "$var_ref_count_path"
+			echo PKG_REF_COUNT > "$PKG_REF_COUNT_PATH"
     	fi
     else
     	PURGE_OPTS="$PURGE_OPTS $var"
     fi
 done
 
-if [ -z "$PURGE_PKGS" ]; then
+if [[ ! -z "$PURGE_PKGS" ]]; then
 
 	export DEBIAN_FRONTEND=noninteractive
 
