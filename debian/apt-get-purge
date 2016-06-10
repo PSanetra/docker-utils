@@ -1,6 +1,8 @@
 #!/bin/bash
 #only purges if the refcount in $DOCKER_UTILS_APT_REF_COUNTS
 
+set -ex
+
 for var in "$@"
 do
 	var_ref_count_path="$DOCKER_UTILS_APT_REF_COUNTS/$var"
