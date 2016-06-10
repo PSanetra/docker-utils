@@ -16,7 +16,7 @@ do
 
     		rm "$PKG_REF_COUNT_PATH"
     	else
-			echo PKG_REF_COUNT > "$PKG_REF_COUNT_PATH"
+			echo $PKG_REF_COUNT > "$PKG_REF_COUNT_PATH"
     	fi
     else
     	PURGE_OPTS="$PURGE_OPTS $var"
