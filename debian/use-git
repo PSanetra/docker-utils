@@ -4,6 +4,6 @@ set -ex
 
 apt-get-install git
 
-exec "$@"
+"$@"
 
 apt-get-purge git

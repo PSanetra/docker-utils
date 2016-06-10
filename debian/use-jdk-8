@@ -22,7 +22,7 @@ apt-get-install \
 
 /var/lib/dpkg/info/ca-certificates-java.postinst configure
 
-exec "$@"
+"$@"
 
 apt-get-purge \
         unzip \
