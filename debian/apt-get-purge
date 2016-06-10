@@ -9,7 +9,7 @@ do
 
     if [[ ! "$var" =~ ^- && -f "$PKG_REF_COUNT_PATH" ]]; then
 
-		PKG_REF_COUNT=$(expr $(cat "$PKG_REF_COUNT_PATH") - 1)
+		PKG_REF_COUNT=$(($(cat "$PKG_REF_COUNT_PATH") - 1))
 
     	if [[ $PKG_REF_COUNT < 1 ]]; then
 			PURGE_PKGS="$PURGE_PKGS $var"
