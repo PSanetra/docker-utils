@@ -14,7 +14,7 @@ do
     	PKG_REF_COUNT=1
 
     	if [ -f "$PKG_REF_COUNT_PATH" ]; then
-    		PKG_REF_COUNT=$(expr $(cat "$var_ref_count_path") + 1)	
+    		PKG_REF_COUNT=$(expr $(cat "$PKG_REF_COUNT_PATH") + 1)	
     	else
     		INSTALL_PKGS="$INSTALL_PKGS $var"
     	fi
