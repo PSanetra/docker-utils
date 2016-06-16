@@ -7,13 +7,11 @@ if [ -z "$DOCKER_UTILS_HOME" ]; then
 fi
 
 if [ -z "$DOCKER_UTILS_TMPDIR" ]; then
-	export DOCKER_UTILS_TMPDIR=/docker-utils/tmp
+	export DOCKER_UTILS_TMPDIR=$(mktemp -d)
 fi
 
 if [ -z "$DOCKER_UTILS_APT_REF_COUNTS" ]; then
-	export DOCKER_UTILS_APT_REF_COUNTS=/docker-utils/refcounts
+	export DOCKER_UTILS_APT_REF_COUNTS=$(mktemp -d)
 fi
 
 export PATH=$PATH:$DOCKER_UTILS_HOME
-
-mkdir -p $DOCKER_UTILS_TMPDIR $DOCKER_UTILS_APT_REF_COUNTS
