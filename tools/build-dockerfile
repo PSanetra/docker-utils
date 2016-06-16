@@ -1,0 +1,43 @@
+#!/bin/bash
+#replaces "INCLUDE URL" or "INCLUDE FILEPATH" by the specified file's content
+
+function regex_escape()
+{
+	echo $(echo "$1" | sed -r 's/([[\\./()?^$*+{}]|\])/\\\1/g' -)
+}
+
+set -ex
+
+DF_TMPL=$1
+DF=$2
+
+if [[ -z $DF_TMPL ]]; then
+	DF_TMPL="Dockerfile.tmpl"
+fi
+
+if [[ -z $DF ]]; then
+	DF=$(echo "$DF_TMPL" | sed -r 's/\.tmpl$//' -)
+fi
+
+[[ -f $DF_TMPL ]]
+
+cp $DF_TMPL $DF
+
+DF_TMPDIR=$(mktemp -d)
+
+grep -o -P '(?<=^INCLUDE)\s+\S+' "$DF_TMPL" | while read LINE
+do
+	LINE=$(echo "$LINE" | grep -o -P '\S+')
+	INCL_FILE=$LINE
+
+    if [[ $INCL_FILE =~ ^https?:\/\/ ]]; then
+    	INCL_FILE=$DF_TMPDIR/dockerfile_include.tmp
+    	curl -L $LINE > $INCL_FILE
+    fi
+
+    LINE=$(regex_escape "$LINE")
+    sed -i -r "/^INCLUDE\s+$LINE/r $INCL_FILE" $DF
+    sed -i -r "/^INCLUDE\s+$LINE/d" $DF
+done
+
+rm -r $DF_TMPDIR
