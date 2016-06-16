@@ -1,0 +1,15 @@
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+RUN groupadd -r jetty && useradd -r -g jetty jetty
+
+ENV JETTY_HOME /opt/jetty
+ENV JETTY_BASE /var/lib/jetty
+ENV PATH $JETTY_HOME/bin:$PATH
+ENV JETTY_VERSION 9.3.9.v20160517
+
+ENV JETTY_RUN /run/jetty
+ENV JETTY_STATE $JETTY_RUN/jetty.state
+ENV JETTY_TMPDIR /tmp/jetty
+
+EXPOSE 8080
+
+CMD java -Djava.io.tmpdir=${JETTY_TMPDIR} -jar ${JETTY_HOME}/start.jar
