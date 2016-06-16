@@ -24,7 +24,7 @@ gpg-verify 	$JETTY_TGZ_URL.asc \
 
 xtrct jetty.tar.gz
 
-mv jetty $JETTY_HOME
+mv jetty-distribution-$JETTY_VERSION $JETTY_HOME
 
 # Get the list of modules in the default start.ini and build new base with those modules, then add setuid
 MODULES="$(grep -- ^--module= "$JETTY_HOME/start.ini" | cut -d= -f2 | paste -d, -s)"
