@@ -3,7 +3,11 @@
 
 set -ex
 
-export GNUPGHOME=$DOCKER_UTILS_TMPDIR
+export GNUPGHOME=$DOCKER_UTILS_TMPDIR/gnupg
+
+mkdir -p $GNUPGHOME
+
+chmod 700 $GNUPGHOME
 
 SIG_FILE_URL=$1
 
@@ -22,7 +26,7 @@ fi
 
 while (( "$#" )); do
 	if [[ $1 =~ ^https?:\/\/ ]]; then
-		curl -L $KEYS_URL > $KEYS_FILE
+		curl -L $1 > $KEYS_FILE
 		gpg --import $KEYS_FILE
 		rm $KEYS_FILE
 	elif [[ $1 =~ \/ ]]; then
@@ -41,3 +45,5 @@ gpg --verify $SIG_FILE $FILE_TO_VERIFY
 if [[ $SIG_FILE != $SIG_FILE_URL ]]; then
 	rm $SIG_FILE
 fi
+
+rm -r $GNUPGHOME
