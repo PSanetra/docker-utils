@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -ex
+
+cleanup-docker-utils
+
+rm -r $DOCKER_UTILS_HOME
