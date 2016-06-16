@@ -1,26 +1,43 @@
 #!/bin/bash
+#usage: gpg-verify (SIG_FILE_URL|SIG_FILE_PATH) FILE_TO_VERIFY (KEY_FILE_URL|KEY_FILE_PATH|KEYSERVER:KEYID)+
 
 set -ex
 
 export GNUPGHOME=$DOCKER_UTILS_TMPDIR
 
-KEYS_URL=$1
+SIG_FILE_URL=$1
 
-SIG_FILE_URL=$2
+FILE_TO_VERIFY=$2
 
-FILE_TO_VERIFY=$3
+shift 2
 
 KEYS_FILE=$DOCKER_UTILS_TMPDIR/KEYS
 SIG_FILE=$DOCKER_UTILS_TMPDIR/sig.asc
 
-curl $KEYS_URL > $KEYS_FILE
+if [[ $SIG_FILE_URL =~ ^https?:\/\/ ]]; then
+	curl -L $SIG_FILE_URL > $SIG_FILE
+else
+	SIG_FILE="$SIG_FILE_URL"
+fi
 
-curl $SIG_FILE_URL > $SIG_FILE
+while (( "$#" )); do
+	if [[ $1 =~ ^https?:\/\/ ]]; then
+		curl -L $KEYS_URL > $KEYS_FILE
+		gpg --import $KEYS_FILE
+		rm $KEYS_FILE
+	elif [[ $1 =~ \/ ]]; then
+		gpg --import $1
+	else
+		KEYSERVER=$(echo "$1" | grep -o -P '^[^:]+')
+		KEYID=$(echo "$1" | grep -o -P '[^:]+$')
+		gpg --keyserver "$KEYSERVER" --recv-keys "$KEYID"
+	fi
 
-gpg --import $KEYS_FILE
-
-rm $KEYS_FILE
+	shift
+done
 
 gpg --verify $SIG_FILE $FILE_TO_VERIFY
 
-rm -r $SIG_FILE
+if [[ $SIG_FILE != $SIG_FILE_URL ]]; then
+	rm $SIG_FILE
+fi

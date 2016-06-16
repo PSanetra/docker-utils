@@ -10,7 +10,7 @@ apt-get-install curl
 
 curl -L http://ftp.halifax.rwth-aachen.de/apache//ant/binaries/apache-ant-$ANT_VERSION-bin.tar.gz > $ANT_HOME.tar.gz
 
-gpg-verify https://www.apache.org/dist/ant/KEYS https://www.apache.org/dist/ant/binaries/apache-ant-$ANT_VERSION-bin.tar.gz.asc $ANT_HOME.tar.gz
+gpg-verify https://www.apache.org/dist/ant/binaries/apache-ant-$ANT_VERSION-bin.tar.gz.asc $ANT_HOME.tar.gz https://www.apache.org/dist/ant/KEYS
 
 xtrct $ANT_HOME.tar.gz
 
