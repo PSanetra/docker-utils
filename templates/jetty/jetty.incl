@@ -12,4 +12,4 @@ ENV JETTY_TMPDIR /tmp/jetty
 
 EXPOSE 8080 8443
 
-CMD java -Djava.io.tmpdir=${JETTY_TMPDIR} -jar ${JETTY_HOME}/start.jar
+CMD java -Djava.io.tmpdir=${JETTY_TMPDIR} -jar ${JETTY_HOME}/start.jar jetty.home=${JETTY_HOME} jetty.base=${JETTY_BASE}

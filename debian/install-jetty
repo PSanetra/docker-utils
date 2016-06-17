@@ -26,8 +26,14 @@ xtrct jetty.tar.gz
 
 mv jetty-distribution-$JETTY_VERSION $JETTY_HOME
 
+cd $JETTY_HOME
+
+sed -i '/jetty-logging/d' etc/jetty.conf
+rm -r demo-base
+
 # Get the list of modules in the default start.ini and build new base with those modules, then add setuid
 MODULES="$(grep -- ^--module= "$JETTY_HOME/start.ini" | cut -d= -f2 | paste -d, -s)"
-java -jar "$JETTY_HOME/start.jar" --add-to-startd="$MODULES,setuid"
+
+java -jar "$JETTY_HOME/start.jar" jetty.home=$JETTY_HOME jetty.base=$JETTY_BASE --add-to-startd="$MODULES,setuid,http2" --approve-all-licenses
 
 apt-get-purge curl gnupg
