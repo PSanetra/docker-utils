@@ -10,6 +10,10 @@ ENV JETTY_RUN /run/jetty
 ENV JETTY_STATE $JETTY_RUN/jetty.state
 ENV JETTY_TMPDIR /tmp/jetty
 
+#WORKDIR must be JETTY_BASE, because the classpath to alpn-boot-*.jar will be resolved relative to the current directory, not relative to JETTY_BASE
+#alpn-boot-*.jar is neccessary for http2
+WORKDIR ${JETTY_BASE}
+
 EXPOSE 8080 8443
 
 CMD java -Djava.io.tmpdir=${JETTY_TMPDIR} -jar ${JETTY_HOME}/start.jar jetty.home=${JETTY_HOME} jetty.base=${JETTY_BASE}
