@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -ex
+
+PKG=$1
+
+shift
+
+apt-get-install $PKG
+
+"$@"
+
+apt-get-purge $PKG

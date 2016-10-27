@@ -1,9 +1,0 @@
-#!/bin/bash
-
-set -ex
-
-apt-get-install git
-
-"$@"
-
-apt-get-purge git
