@@ -6,15 +6,15 @@ export LANG=C.UTF-8
 
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
-if [[ -z JAVA_VERSION ]]; then
-        export JAVA_VERSION=8u91
+if [[ -z "$JAVA_VERSION" ]]; then
+        export JAVA_VERSION=8u102
 fi
 
-if [[ -z JAVA_DEBIAN_VERSION ]]; then
-        export JAVA_DEBIAN_VERSION=8u91-b14-1~bpo8+1
+if [[ -z "$JAVA_DEBIAN_VERSION" ]]; then
+        export JAVA_DEBIAN_VERSION=8u102-b14.1-1~bpo8+1
 fi
 
-if [[ -z CA_CERTIFICATES_JAVA_VERSION ]]; then
+if [[ -z "$CA_CERTIFICATES_JAVA_VERSION" ]]; then
         export CA_CERTIFICATES_JAVA_VERSION=20140324
 fi
 

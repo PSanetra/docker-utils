@@ -4,6 +4,18 @@ set -ex
 
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 
+if [[ -z "$JAVA_VERSION" ]]; then
+        export JAVA_VERSION=8u102
+fi
+
+if [[ -z "$JAVA_DEBIAN_VERSION" ]]; then
+        export JAVA_DEBIAN_VERSION=8u102-b14.1-1~bpo8+1
+fi
+
+if [[ -z "$CA_CERTIFICATES_JAVA_VERSION" ]]; then
+        export CA_CERTIFICATES_JAVA_VERSION=20140324
+fi
+
 if [[ ! -f /etc/apt/sources.list.d/jessie-backports.list ]]; then
 	echo 'deb http://httpredir.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list
 fi
@@ -12,7 +24,7 @@ apt-get-install \
         unzip \
         bzip2 \
         xz-utils \
-        openjdk-8-jdk="$JAVA_DEBIAN_VERSION" \
+        openjdk-8-jre-headless="$JAVA_DEBIAN_VERSION" \
         ca-certificates-java="$CA_CERTIFICATES_JAVA_VERSION"
 
 /var/lib/dpkg/info/ca-certificates-java.postinst configure
